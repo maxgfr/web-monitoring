@@ -1,16 +1,12 @@
-version: "2"
+version: "3"
 services:
-  web:
+  web-monitoring:
     build: .
     ports:
-    - "8080:8080"
+    - "3000:3000"
     depends_on:
     - mongo
   mongo:
     image: mongo
     ports:
     - "27017:27017"
-    volumes:
-    - data-volume:/data/db
-volumes:
-  data-volume:
