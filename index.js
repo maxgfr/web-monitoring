@@ -10,7 +10,7 @@ const MongoUrl = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017';
 const dbName = process.env.DB_NAME || 'myproject';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8080
 
 app.use(bodyParser.json());
 app.use(cors());
