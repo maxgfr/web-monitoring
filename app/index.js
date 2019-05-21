@@ -3,12 +3,14 @@ const cors = require('cors')
 const bodyParser  = require('body-parser');
 const app = express()
 const MongoClient = require('mongodb').MongoClient;
-const MongoUrl = process.env.mongoUrl ||'mongodb://127.0.0.1:27017';
-const dbName = process.env.dbName || 'myproject';
-const dbCollection = process.env.dbCollection || 'documents';
+
 require('dotenv').config();
 
-const port = process.env.port || 8000
+const MongoUrl = process.env.MONGO_URL ||'mongodb://127.0.0.1:27017';
+const dbName = process.env.DB_NAME || 'myproject';
+const dbCollection = process.env.DB_COLLECTION || 'documents';
+
+const port = process.env.PORT || 8000
 
 app.use(bodyParser.json());
 app.use(cors());
