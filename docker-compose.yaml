@@ -30,3 +30,28 @@ services:
       - "AUTO_CREATE_TOPICS=true"
     networks:
       - app-tier
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '-config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - app-tier
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - '9100:9100'
+    networks:
+      - app-tier
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=pass
+    depends_on:
+      - prometheus
+    networks:
+      - app-tier

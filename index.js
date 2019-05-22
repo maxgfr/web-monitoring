@@ -11,7 +11,7 @@ const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017';
 const dbName = process.env.DB_NAME || 'myproject';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
 const port = process.env.PORT || 1603;
-// localhost:9092 for local or kafka:2181 for docker
+// localhost:9092 for local or kafka:9092 for docker
 const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092';
 const mainTopic = [{
   topic: dbName
@@ -25,9 +25,21 @@ const kafkaOptions = {
 const kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
 const kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
 const kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
+/*
 const promClient = require('prom-client');
+const promHost = process.env.PROM_HOST || 'prom:9090';
+// localhost:9092 for local or prom:9090 for docker
+const promGateway = new promClient.Pushgateway(promHost);
+*/
 
 kafkaProducer.on("ready", function() {
+    kafkaClient.createTopics(mainTopic, (error, result) => {
+      if(!error) {
+        console.log(result)
+      } else {
+        console.log(error)
+      }
+    });
     console.log("Kafka Producer is connected and ready.");
 });
 
@@ -42,6 +54,13 @@ kafkaConsumer.on("message", function(message) {
     var decodedMessage = JSON.parse(buf.toString());
     console.log(util.inspect(decodedMessage, false, null, true));
     console.log('<=====================>')
+    /*promGateway.push(decodedMessage, function(err, resp, body) {
+      console.log('in prometheus :')
+      console.log(err)
+      console.log(resp)
+      console.log(body)
+    });
+    */
 });
 
 kafkaConsumer.on("error", function(err) {
@@ -60,16 +79,9 @@ app.use(cors());
 app.get('/', (req, res) => {
   MongoClient.connect(mongoUrl, function(err, client) {
         if (err !== null) {
-            res.json({message: 'Could not connect to MongoDB', error: true});
+            res.json({message: 'could not connect to mongodb', error: true});
         } else {
-            kafkaClient.createTopics(mainTopic, (error, result) => {
-              if(!error) {
-                console.log(result)
-                res.json({message: 'Connected to MongoDB and KafkaClient', error: false})
-              } else {
-                res.json({message: 'Error with KafkaClient', error: true});
-              }
-            });
+            res.json({message: 'connected to mongodb', error: false})
             client.close();
         }
     });
