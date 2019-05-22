@@ -11,8 +11,8 @@ const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017';
 const dbName = process.env.DB_NAME || 'myproject';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
 const port = process.env.PORT || 1603;
-// http://localhost:2181 for local or zookeeper:2181 for docker
-const kafkaUrl = process.env.KAFKA_URL || 'zookeeper:2181';
+// localhost:9092 for local or kafka:2181 for docker
+const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092';
 const mainTopic = [{
   topic: dbName
 }];
@@ -22,7 +22,7 @@ const kafkaOptions = {
   fetchMaxBytes: 1024 * 1024,
   encoding: "buffer"
 };
-const kafkaClient = new kafka.KafkaClient(kafkaUrl);
+const kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
 const kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
 const kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
 const promClient = require('prom-client');

@@ -9,8 +9,6 @@ services:
       - "1603:1603"
     depends_on:
       - mongo
-      - zookeeper
-      - kafka
     networks:
       - app-tier
   mongo:
@@ -19,21 +17,16 @@ services:
       - "27017:27017"
     networks:
       - app-tier
-  zookeeper:
-    image: 'bitnami/zookeeper:latest'
-    ports:
-      - '2181:2181'
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    networks:
-      - app-tier
   kafka:
-    image: 'bitnami/kafka:latest'
+    image: spotify/kafka
     ports:
-      - '9092:9092'
+      - "2181:2181"
+      - "9092:9092"
+    hostname: kafka
+    container_name: kafka
     environment:
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      - "ADVERTISED_HOST=kafka"
+      - "ADVERTISED_PORT=9092"
+      - "AUTO_CREATE_TOPICS=true"
     networks:
       - app-tier
