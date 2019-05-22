@@ -18,7 +18,7 @@ services:
     networks:
       - app-tier
   kafka:
-    image:               spotify/kafka
+    image:               spotify/kafka:latest
     ports:
       - "2181:2181"
       - "9092:9092"
@@ -40,7 +40,7 @@ services:
       networks:
         - app-tier
   node-exporter:
-      image:             prom/node-exporter:0.12.0rc1
+      image:             prom/node-exporter:latest
       networks:
         - app-tier
   grafana:

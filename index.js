@@ -8,13 +8,15 @@ const kafka = require('kafka-node');
 require('dotenv').config();
 // mongodb://127.0.0.1:27017 for local or mongodb://mongo:27017 for docker
 const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017';
-const dbName = process.env.DB_NAME || 'myproject';
+const dbName = process.env.DB_NAME || 'project';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
 const port = process.env.PORT || 1603;
 // localhost:9092 for local or kafka:9092 for docker
-const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092';
+const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092 ';
 const mainTopic = [{
-  topic: dbName
+  topic: dbName,
+  partitions: 1,
+  replicationFactor: 2
 }];
 const kafkaOptions = {
   autoCommit: true,
@@ -22,35 +24,43 @@ const kafkaOptions = {
   fetchMaxBytes: 1024 * 1024,
   encoding: "buffer"
 };
-const kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
-const kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
-const kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
+var kafkaProducer = kafkaConsumer = kafkaClient = null;
+kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
+kafkaClient.createTopics(mainTopic, (error, result) => {
+  if(!error) {
+    console.log(result)
+    kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
+    kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
 
-kafkaProducer.on("ready", function() {
-    console.log("Kafka Producer is connected and ready.");
-});
-
-kafkaProducer.on("error", function(error) {
-    console.error(error);
-});
-
-kafkaConsumer.on("message", function(message) {
-    console.log('kafka consumer :')
-    console.log('<=====================>')
-    var buf = new Buffer(message.value, "binary");
-    var decodedMessage = JSON.parse(buf.toString());
-    console.log(util.inspect(decodedMessage, false, null, true));
-    console.log('<=====================>')
-});
-
-kafkaConsumer.on("error", function(err) {
-    console.log("error", err);
-});
-
-kafkaConsumer.on("SIGINT", function() {
-    kafkaConsumer.close(true, function() {
-        console.log('kafka is close');
+    kafkaProducer.on("ready", function() {
+        console.log("Kafka Producer is connected and ready.");
     });
+
+    kafkaProducer.on("error", function(error) {
+        console.error(error);
+    });
+
+    kafkaConsumer.on("message", function(message) {
+        console.log('kafka consumer :')
+        console.log('<=====================>')
+        var buf = new Buffer(message.value, "binary");
+        var decodedMessage = JSON.parse(buf.toString());
+        console.log(util.inspect(decodedMessage, false, null, true));
+        console.log('<=====================>')
+    });
+
+    kafkaConsumer.on("error", function(err) {
+        console.log("error", err);
+    });
+
+    kafkaConsumer.on("SIGINT", function() {
+        kafkaConsumer.close(true, function() {
+            console.log('kafka is close');
+        });
+    });
+  } else {
+    console.log(error)
+  }
 });
 
 app.use(bodyParser.json());
@@ -58,6 +68,10 @@ app.use(cors());
 
 app.get('/', (req, res) => {
   MongoClient.connect(mongoUrl, function(err, client) {
+      if(err) {
+        res.json({message: 'error with mongo', error: true});
+        return;
+      }
       const db = client.db(dbName);
       // Get the documents collection
       const collection = db.collection(dbCollection);
@@ -90,6 +104,10 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
     MongoClient.connect(mongoUrl, function(err, client) {
+        if(err) {
+          res.json({message: 'error with mongo', error: true});
+          return;
+        }
         const db = client.db(dbName);
         // Get the documents collection
         const collection = db.collection(dbCollection);
@@ -126,6 +144,10 @@ app.post('/', (req, res) => {
 
 app.delete('/', (req, res) => {
     MongoClient.connect(mongoUrl, function(err, client) {
+      if(err) {
+        res.json({message: 'error with mongo', error: true});
+        return;
+      }
       const db = client.db(dbName);
       // Get the documents collection
       const collection = db.collection(dbCollection);
@@ -171,12 +193,5 @@ app.get('/status-mongo', (req, res) => {
 })
 
 app.listen(port, () => {
-  kafkaClient.createTopics(mainTopic, (error, result) => {
-    if(!error) {
-      console.log(result)
-    } else {
-      console.log(error)
-    }
-  });
   console.log(`Example app listening on port ${port}!`);
 })
