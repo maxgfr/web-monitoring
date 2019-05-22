@@ -1,7 +1,5 @@
+# docker-compose.yml
 version:            "2"
-networks:
-  app-tier:
-    driver:         bridge
 services:
   web-monitoring:
     build:          .
@@ -9,14 +7,10 @@ services:
       - "1603:1603"
     depends_on:
       - mongo
-    networks:
-      - app-tier
   mongo:
     image:          mongo
     ports:
       - "27017:27017"
-    networks:
-      - app-tier
   kafka:
     image:          spotify/kafka:latest
     ports:
@@ -28,31 +22,22 @@ services:
       - "ADVERTISED_HOST=kafka"
       - "ADVERTISED_PORT=9092"
       - "AUTO_CREATE_TOPICS=true"
-    networks:
-      - app-tier
   prometheus:
-    image:          prom/prometheus:0.18.0
+    image:          prom/prometheus:latest
+    container_name: prometheus
+    command:
+        - --config.file=/etc/prometheus/prometheus.yml
     volumes:
         - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-        - '-config.file=/etc/prometheus/prometheus.yml'
     ports:
         - '9090:9090'
-    networks:
-          - app-tier
   node-exporter:
-      image:        prom/node-exporter:0.12
-      networks:
-        - app-tier
+      image:        prom/node-exporter:latest
   grafana:
       image:        grafana/grafana:latest
       environment:
           - GF_SECURITY_ADMIN_PASSWORD=pass
-      volumes:
-          - grafana_data:/var/lib/grafana
       depends_on:
           - prometheus
-      networks:
-        - app-tier
-volumes:
-    grafana_data:   {}
+      ports:
+        - "3000:3000"

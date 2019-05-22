@@ -3,13 +3,9 @@
 ## To test all the infrastructure
 
 ```bash
+docker build -t web-monitoring .
 docker-compose up
 docker-compose down --rmi 'all'
-```
-
-## To test the node application with docker
-```bash
-docker build -t web-monitoring .
 ```
 
 ## To test kafka locally
