@@ -25,22 +25,9 @@ const kafkaOptions = {
 const kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
 const kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
 const kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
-/*
-const promClient = require('prom-client');
-const promHost = process.env.PROM_HOST || 'prom:9090';
-// localhost:9092 for local or prom:9090 for docker
-const promGateway = new promClient.Pushgateway(promHost);
-*/
 
 kafkaProducer.on("ready", function() {
     console.log("Kafka Producer is connected and ready.");
-    kafkaClient.createTopics(mainTopic, (error, result) => {
-      if(!error) {
-        console.log(result)
-      } else {
-        console.log(error)
-      }
-    });  
 });
 
 kafkaProducer.on("error", function(error) {
@@ -54,13 +41,6 @@ kafkaConsumer.on("message", function(message) {
     var decodedMessage = JSON.parse(buf.toString());
     console.log(util.inspect(decodedMessage, false, null, true));
     console.log('<=====================>')
-    /*promGateway.push(decodedMessage, function(err, resp, body) {
-      console.log('in prometheus :')
-      console.log(err)
-      console.log(resp)
-      console.log(body)
-    });
-    */
 });
 
 kafkaConsumer.on("error", function(err) {
@@ -190,4 +170,13 @@ app.get('/status-mongo', (req, res) => {
     });
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => {
+  kafkaClient.createTopics(mainTopic, (error, result) => {
+    if(!error) {
+      console.log(result)
+    } else {
+      console.log(error)
+    }
+  });
+  console.log(`Example app listening on port ${port}!`);
+})

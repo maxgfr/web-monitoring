@@ -1,0 +1,83 @@
+version:                 "2"
+networks:
+  app-tier:
+    driver:              bridge
+services:
+  web-monitoring:
+    build:               .
+    ports:
+      - "1603:1603"
+    depends_on:
+      - mongo
+    networks:
+      - app-tier
+  mongo:
+    image:               mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-tier
+  kafka:
+    image:               spotify/kafka
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    hostname:            kafka
+    container_name:      kafka
+    environment:
+      - "ADVERTISED_HOST=kafka"
+      - "ADVERTISED_PORT=9092"
+      - "AUTO_CREATE_TOPICS=true"
+    networks:
+      - app-tier
+  prometheus:
+      build:             ./prometheus
+      volumes:
+          - prometheus_data:/prometheus
+      command:
+          - '-config.file=/etc/prometheus/prometheus.yml'
+          - '-alertmanager.url=http://alertmanager:9093'
+      networks:
+        - app-tier
+  node-exporter:
+      image:             prom/node-exporter:0.12.0rc1
+      networks:
+        - app-tier
+  grafana:
+      image:             grafana/grafana:3.0.1
+      environment:
+          - GF_SECURITY_ADMIN_PASSWORD=pass
+      volumes:
+          - grafana_data:/var/lib/grafana
+      depends_on:
+          - prometheus
+      networks:
+        - app-tier
+  alertmanager:
+      build:             ./alertmanager
+      command:
+          - '-config.file=/alertmanager.yml'
+      networks:
+        - app-tier
+  ssl:
+      image:             opencapacity/lets-nginx:1.3
+      environment:
+          - EMAIL=webmaster@opencapacity.co
+          - DOMAIN=test.opencapacity.co
+          - UPSTREAM=grafana:3000
+      ports:
+          - "443:443"
+      volumes:
+          - letsencrypt:/etc/letsencrypt
+          - letsencrypt_backups:/var/lib/letsencrypt
+          - dhparam_cache:/cache
+      depends_on:
+          - grafana
+      networks:
+        - app-tier
+volumes:
+    prometheus_data:     {}
+    grafana_data:        {}
+    letsencrypt:         {}
+    letsencrypt_backups: {}
+    dhparam_cache:       {}
