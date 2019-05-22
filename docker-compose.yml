@@ -31,15 +31,15 @@ services:
     networks:
       - app-tier
   prometheus:
-     build:         prom/prometheus:0.18.0
-     volumes:
-          - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      command:
-          - '-config.file=/etc/prometheus/prometheus.yml'
-      ports:
-          - '9090:9090'
-      networks:
-        - app-tier
+    image:          prom/prometheus:0.18.0
+    volumes:
+        - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+        - '-config.file=/etc/prometheus/prometheus.yml'
+    ports:
+        - '9090:9090'
+    networks:
+          - app-tier
   node-exporter:
       image:        prom/node-exporter:0.12
       networks:
