@@ -33,14 +33,14 @@ const promGateway = new promClient.Pushgateway(promHost);
 */
 
 kafkaProducer.on("ready", function() {
+    console.log("Kafka Producer is connected and ready.");
     kafkaClient.createTopics(mainTopic, (error, result) => {
       if(!error) {
         console.log(result)
       } else {
         console.log(error)
       }
-    });
-    console.log("Kafka Producer is connected and ready.");
+    });  
 });
 
 kafkaProducer.on("error", function(error) {
@@ -77,17 +77,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  MongoClient.connect(mongoUrl, function(err, client) {
-        if (err !== null) {
-            res.json({message: 'could not connect to mongodb', error: true});
-        } else {
-            res.json({message: 'connected to mongodb', error: false})
-            client.close();
-        }
-    });
-})
-
-app.get('/all', (req, res) => {
   MongoClient.connect(mongoUrl, function(err, client) {
       const db = client.db(dbName);
       // Get the documents collection
@@ -187,6 +176,17 @@ app.delete('/', (req, res) => {
         res.json({message: 'error with the body of the request', error: true});
       }
       client.close();
+    });
+})
+
+app.get('/status-mongo', (req, res) => {
+  MongoClient.connect(mongoUrl, function(err, client) {
+        if (err !== null) {
+            res.json({message: 'could not connect to mongodb', error: true});
+        } else {
+            res.json({message: 'connected to mongodb', error: false})
+            client.close();
+        }
     });
 })
 
