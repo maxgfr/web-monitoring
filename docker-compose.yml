@@ -1,10 +1,10 @@
-version:             "2"
+version:            "2"
 networks:
   app-tier:
-    driver:          bridge
+    driver:         bridge
 services:
   web-monitoring:
-    build:           .
+    build:          .
     ports:
       - "1603:1603"
     depends_on:
@@ -12,18 +12,18 @@ services:
     networks:
       - app-tier
   mongo:
-    image:           mongo
+    image:          mongo
     ports:
       - "27017:27017"
     networks:
       - app-tier
   kafka:
-    image:           spotify/kafka:latest
+    image:          spotify/kafka:latest
     ports:
       - "2181:2181"
       - "9092:9092"
-    hostname:        kafka
-    container_name:  kafka
+    hostname:       kafka
+    container_name: kafka
     environment:
       - "ADVERTISED_HOST=kafka"
       - "ADVERTISED_PORT=9092"
@@ -31,21 +31,21 @@ services:
     networks:
       - app-tier
   prometheus:
-      build:         prom/prometheus:0.18.0
-       volumes:
-            - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        command:
-            - '-config.file=/etc/prometheus/prometheus.yml'
-        ports:
-            - '9090:9090'
+     build:         prom/prometheus:0.18.0
+     volumes:
+          - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      command:
+          - '-config.file=/etc/prometheus/prometheus.yml'
+      ports:
+          - '9090:9090'
       networks:
         - app-tier
   node-exporter:
-      image:         prom/node-exporter:0.12
+      image:        prom/node-exporter:0.12
       networks:
         - app-tier
   grafana:
-      image:         grafana/grafana:latest
+      image:        grafana/grafana:latest
       environment:
           - GF_SECURITY_ADMIN_PASSWORD=pass
       volumes:
@@ -55,4 +55,4 @@ services:
       networks:
         - app-tier
 volumes:
-    grafana_data:    {}
+    grafana_data:   {}
