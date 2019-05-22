@@ -8,15 +8,15 @@ const kafka = require('kafka-node');
 require('dotenv').config();
 // mongodb://127.0.0.1:27017 for local or mongodb://mongo:27017 for docker
 const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017';
-const dbName = process.env.DB_NAME || 'project';
+const dbName = process.env.DB_NAME || 'tpc';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
 const port = process.env.PORT || 1603;
 // localhost:9092 for local or kafka:9092 for docker
-const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092 ';
+const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092';
 const mainTopic = [{
   topic: dbName,
   partitions: 1,
-  replicationFactor: 2
+  replicationFactor: 1
 }];
 const kafkaOptions = {
   autoCommit: true,
