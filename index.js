@@ -7,11 +7,12 @@ const MongoClient = require('mongodb').MongoClient;
 const kafka = require('kafka-node');
 require('dotenv').config();
 // mongodb://127.0.0.1:27017 for local or mongodb://mongo:27017 for docker
-const mongoUrl = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017';
+const mongoUrl = process.env.MONGO_URL || 'mongodb://mongo:27017';
 const dbName = process.env.DB_NAME || 'myproject';
 const dbCollection = process.env.DB_COLLECTION || 'documents';
-const port = process.env.PORT || 3000;
-const kafkaUrl = process.env.KAFKA_URL || 'http://localhost:2181';
+const port = process.env.PORT || 1603;
+// http://localhost:2181 for local or zookeeper:2181 for docker
+const kafkaUrl = process.env.KAFKA_URL || 'zookeeper:2181';
 const mainTopic = [{
   topic: dbName
 }];
@@ -24,6 +25,7 @@ const kafkaOptions = {
 const kafkaClient = new kafka.KafkaClient(kafkaUrl);
 const kafkaProducer = new kafka.HighLevelProducer(kafkaClient);
 const kafkaConsumer = new kafka.Consumer(kafkaClient, mainTopic, kafkaOptions);
+const promClient = require('prom-client');
 
 kafkaProducer.on("ready", function() {
     console.log("Kafka Producer is connected and ready.");

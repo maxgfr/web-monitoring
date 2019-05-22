@@ -3,10 +3,25 @@ services:
   web-monitoring:
     build: .
     ports:
-    - "3000:3000"
+    - "1603:1603"
     depends_on:
     - mongo
+    - zookeeper
+    - kafka
   mongo:
     image: mongo
     ports:
     - "27017:27017"
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes

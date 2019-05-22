@@ -1,7 +1,7 @@
 FROM node:8
 
 ENV NODE_ENV production
-ENV PORT 3000
+ENV PORT 1603
 
 # We'll need this for testing the endpoints with helm test
 RUN apt-get update;
@@ -18,6 +18,6 @@ RUN npm install;
 # Bundle app source
 COPY . /app
 
-EXPOSE 3000
+EXPOSE 1603
 
 CMD ["npm", "start"]

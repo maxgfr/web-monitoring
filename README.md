@@ -1,21 +1,24 @@
 # web-monitoring
 
-## Commands
+## Commands to test all the infrastructure
 
+```bash
+docker-compose up
+docker-compose down
+```
+
+## Commands to test the node application with docker
 ```bash
 docker build -t web-monitoring .
 ```
 
+## Commands to test kafka locally
 ```bash
-docker-compose up
-```
-
-```bash
-docker-compose down
-```
-
+brew install kafka
+brew install zookeeper
 zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
 kafka-server-start /usr/local/etc/kafka/server.properties
 kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
 kafka-console-producer --broker-list localhost:9092 --topic test
 kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+```
