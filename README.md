@@ -41,29 +41,32 @@ docker-compose down --rmi 'all'
 Now, we can run different request type `POST / GET / DELETE` (`http://localhost:1603`) :
 
 <div align="center">
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/post.png" height="540" width="280"/>
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/get.png" height="540" width="280"/>
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/delete.png" height="540" width="280"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/post.png" height="303,75" width="540"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/get.png" height="303,75" width="540"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/delete.png" height="303,75" width="540"/>
 </div>
+<br/>
 
 We can also open `Prometheus` (`http://localhost:9090`) :
 
 <div align="center">
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/prometheus.png" height="540" width="280"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/prometheus.png" height="303,75" width="540"/>
 </div>
 
 Or see customized metrics in the application (`http://localhost:1603/metrics`) :
 
 <div align="center">
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/metrics.png" height="540" width="280"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/metrics.png" height="303,75" width="540"/>
 </div>
+<br/>
 
 Finally, we can use `Grafana` for the monitoring of the application (`http://localhost:3000`) :
 
 <div align="center">
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-1.png" height="540" width="280"/>
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-2.png" height="540" width="280"/>
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-mongo-1.png" height="540" width="280"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-1.png" height="303,75" width="540"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-2.png" height="303,75" width="540"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-mongo-1.png" height="303,75" width="540"/>
 </div>
+<br/>
 
 *To connect to `Grafana`, by default, the username is `admin` and the password is `pass`*
