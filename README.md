@@ -1,12 +1,13 @@
 # web-monitoring
 
-## To test all the infrastructure
+## To start the infrastructure
 
 ```bash
 docker-compose up
 ```
 
-## To stop and remove all the infrastructure
+## To stop and remove the infrastructure
+
 ```bash
 docker-compose down --rmi 'all'
 ```

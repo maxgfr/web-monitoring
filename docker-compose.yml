@@ -45,11 +45,8 @@ services:
       ports:
         - 9100:9100
 
-  mongodb-exporter:
-    image: forekshub/percona-mongodb-exporter
-    container_name: mongodb_exporter
-    ports:
-      - 9216:9216
+  mongodb_exporter:
+    build: ./mongodb_exporter
     environment:
       - MONGODB_URL=mongodb://mongo:27017
 
