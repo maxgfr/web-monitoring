@@ -62,69 +62,28 @@ kafkaClient.createTopics(mainTopic, (error, result) => {
             console.log('kafka is close');
         });
     });
-  } else {
-    console.log(error)
-  }
-});
 
-app.use(bodyParser.json());
-app.use(cors());
+    app.use(bodyParser.json());
+    app.use(cors());
 
-app.use((req, res, next) => {
-  PrometheusMetrics.requestCounter.inc()
-  next();
-});
-
-app.get('/', (req, res) => {
-  MongoClient.connect(mongoUrl, function(err, client) {
-      if(err) {
-        res.json({message: 'error with mongo', error: true});
-        return;
-      }
-      const db = client.db(dbName);
-      // Get the documents collection
-      const collection = db.collection(dbCollection);
-      // Find document
-      collection.find({}).toArray(function(err, docs) {
-        if(!err) {
-          const buffer = new Buffer.from(JSON.stringify([{data: docs, type: 'GET'}]));
-          const record = [
-              {
-                  topic: dbName,
-                  messages: buffer,
-                  attributes: 1 /* Use GZip compression for the payload */
-              }
-          ];
-          kafkaProducer.send(record, function (error, data) {
-              if(!error) {
-                console.log(data);
-                res.json(docs);
-              } else {
-                res.json({message: 'error with kafka', error: true});
-              }
-          });
-        } else {
-          res.json({message: 'error with mongo', error: true});
-        }
-      });
-      client.close();
+    app.use((req, res, next) => {
+      PrometheusMetrics.requestCounter.inc()
+      next();
     });
-})
 
-app.post('/', (req, res) => {
-    MongoClient.connect(mongoUrl, function(err, client) {
-        if(err) {
-          res.json({message: 'error with mongo', error: true});
-          return;
-        }
-        const db = client.db(dbName);
-        // Get the documents collection
-        const collection = db.collection(dbCollection);
-        // Insert some documents
-        if(req.body) {
-          collection.insertOne(req.body, function(err, result) {
+    app.get('/', (req, res) => {
+      MongoClient.connect(mongoUrl, function(err, client) {
+          if(err) {
+            res.json({message: 'error with mongo', error: true});
+            return;
+          }
+          const db = client.db(dbName);
+          // Get the documents collection
+          const collection = db.collection(dbCollection);
+          // Find document
+          collection.find({}).toArray(function(err, docs) {
             if(!err) {
-              const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'POST'}]));
+              const buffer = new Buffer.from(JSON.stringify([{data: docs, type: 'GET'}]));
               const record = [
                   {
                       topic: dbName,
@@ -135,7 +94,7 @@ app.post('/', (req, res) => {
               kafkaProducer.send(record, function (error, data) {
                   if(!error) {
                     console.log(data);
-                    res.json({message: 'added to the database and kafka', error: false});
+                    res.json(docs);
                   } else {
                     res.json({message: 'error with kafka', error: true});
                   }
@@ -144,68 +103,110 @@ app.post('/', (req, res) => {
               res.json({message: 'error with mongo', error: true});
             }
           });
-        } else {
-          res.json({message: 'error with the body of the request', error: true});
-        }
-        client.close();
-    });
-})
+          client.close();
+        });
+    })
 
-app.delete('/', (req, res) => {
-    MongoClient.connect(mongoUrl, function(err, client) {
-      if(err) {
-        res.json({message: 'error with mongo', error: true});
-        return;
-      }
-      const db = client.db(dbName);
-      // Get the documents collection
-      const collection = db.collection(dbCollection);
-      if(req.body)  {
-        collection.deleteOne(req.body, function(err, result) {
-          if(!err) {
-            const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'DELETE'}]));
-            const record = [
-                {
-                    topic: dbName,
-                    messages: buffer,
-                    attributes: 1 /* Use GZip compression for the payload */
-                }
-            ];
-            kafkaProducer.send(record, function (error, data) {
-                if(!error) {
-                  console.log(data);
-                  res.json({message: 'remove to the database and message added to kafka', error: false});
+    app.post('/', (req, res) => {
+        MongoClient.connect(mongoUrl, function(err, client) {
+            if(err) {
+              res.json({message: 'error with mongo', error: true});
+              return;
+            }
+            const db = client.db(dbName);
+            // Get the documents collection
+            const collection = db.collection(dbCollection);
+            // Insert some documents
+            if(req.body) {
+              collection.insertOne(req.body, function(err, result) {
+                if(!err) {
+                  const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'POST'}]));
+                  const record = [
+                      {
+                          topic: dbName,
+                          messages: buffer,
+                          attributes: 1 /* Use GZip compression for the payload */
+                      }
+                  ];
+                  kafkaProducer.send(record, function (error, data) {
+                      if(!error) {
+                        console.log(data);
+                        res.json({message: 'added to the database and kafka', error: false});
+                      } else {
+                        res.json({message: 'error with kafka', error: true});
+                      }
+                  });
                 } else {
-                  res.json({message: 'error with kafka', error: true});
+                  res.json({message: 'error with mongo', error: true});
                 }
+              });
+            } else {
+              res.json({message: 'error with the body of the request', error: true});
+            }
+            client.close();
+        });
+    })
+
+    app.delete('/', (req, res) => {
+        MongoClient.connect(mongoUrl, function(err, client) {
+          if(err) {
+            res.json({message: 'error with mongo', error: true});
+            return;
+          }
+          const db = client.db(dbName);
+          // Get the documents collection
+          const collection = db.collection(dbCollection);
+          if(req.body)  {
+            collection.deleteOne(req.body, function(err, result) {
+              if(!err) {
+                const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'DELETE'}]));
+                const record = [
+                    {
+                        topic: dbName,
+                        messages: buffer,
+                        attributes: 1 /* Use GZip compression for the payload */
+                    }
+                ];
+                kafkaProducer.send(record, function (error, data) {
+                    if(!error) {
+                      console.log(data);
+                      res.json({message: 'remove to the database and message added to kafka', error: false});
+                    } else {
+                      res.json({message: 'error with kafka', error: true});
+                    }
+                });
+              } else {
+                res.json({message: 'error with mongo', error: true});
+              }
             });
           } else {
-            res.json({message: 'error with mongo', error: true});
+            res.json({message: 'error with the body of the request', error: true});
           }
+          client.close();
         });
-      } else {
-        res.json({message: 'error with the body of the request', error: true});
-      }
-      client.close();
-    });
-})
+    })
 
-app.get('/status-mongo', (req, res) => {
-  MongoClient.connect(mongoUrl, function(err, client) {
-        if (err !== null) {
-            res.json({message: 'could not connect to mongodb', error: true});
-        } else {
-            res.json({message: 'connected to mongodb', error: false})
-            client.close();
-        }
-    });
-})
+    app.get('/status-mongo', (req, res) => {
+      MongoClient.connect(mongoUrl, function(err, client) {
+            if (err !== null) {
+                res.json({message: 'could not connect to mongodb', error: true});
+            } else {
+                res.json({message: 'connected to mongodb', error: false})
+                client.close();
+            }
+        });
+    })
 
-app.get('/metrics', (req, res) => {
-  res.set('Content-Type', Prometheus.register.contentType)
-  res.end(Prometheus.register.metrics())
-})
+    app.get('/metrics', (req, res) => {
+      res.set('Content-Type', Prometheus.register.contentType)
+      res.end(Prometheus.register.metrics())
+    })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`);
-})
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}!`);
+    })
+
+  } else {
+    console.log(error)
+  }
+});

@@ -4,7 +4,7 @@
 
 ```bash
 git clone --recursive https://github.com/maxgfr/web-monitoring.git
-docker-compose up
+docker-compose up --build
 ```
 
 ## To stop and remove the infrastructure
