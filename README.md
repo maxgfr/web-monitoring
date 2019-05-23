@@ -3,6 +3,7 @@
 ## To start the infrastructure
 
 ```bash
+git clone --recursive https://github.com/maxgfr/web-monitoring.git
 docker-compose up
 ```
 
