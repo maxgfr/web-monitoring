@@ -4,6 +4,8 @@ const bodyParser  = require('body-parser');
 const util = require('util');
 const app = express()
 const MongoClient = require('mongodb').MongoClient;
+const Prometheus = require('prom-client');
+const Timer = require('easytimer.js').Timer;
 const kafka = require('kafka-node');
 require('dotenv').config();
 // mongodb://127.0.0.1:27017 for local or mongodb://mongo:27017 for docker
@@ -24,12 +26,10 @@ const kafkaOptions = {
   fetchMaxBytes: 1024 * 1024,
   encoding: "buffer"
 };
-const Prometheus = require('prom-client')
 const PrometheusMetrics = {
   requestCounter: new Prometheus.Counter('request_counter', 'The number of requests served'),
   requestPerSec: new Prometheus.Gauge('request_per_sec', 'The number of requests served per seconds'),
 };
-const Timer = require('easytimer.js').Timer;
 const timerInstance = new Timer();
 timerInstance.start();
 var kafkaProducer = kafkaConsumer = kafkaClient = null;
