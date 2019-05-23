@@ -24,6 +24,10 @@ const kafkaOptions = {
   fetchMaxBytes: 1024 * 1024,
   encoding: "buffer"
 };
+const Prometheus = require('prom-client')
+const PrometheusMetrics = {
+  requestCounter: new Prometheus.Counter('request_counter', 'The number of requests served')
+};
 var kafkaProducer = kafkaConsumer = kafkaClient = null;
 kafkaClient = new kafka.KafkaClient({kafkaHost: kafkaHost});
 kafkaClient.createTopics(mainTopic, (error, result) => {
@@ -66,6 +70,11 @@ kafkaClient.createTopics(mainTopic, (error, result) => {
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use((req, res, next) => {
+  PrometheusMetrics.requestCounter.inc()
+  next();
+});
+
 app.get('/', (req, res) => {
   MongoClient.connect(mongoUrl, function(err, client) {
       if(err) {
@@ -78,7 +87,7 @@ app.get('/', (req, res) => {
       // Find document
       collection.find({}).toArray(function(err, docs) {
         if(!err) {
-          const buffer = new Buffer.from(JSON.stringify(docs));
+          const buffer = new Buffer.from(JSON.stringify([{data: docs, type: 'GET'}]));
           const record = [
               {
                   topic: dbName,
@@ -115,7 +124,7 @@ app.post('/', (req, res) => {
         if(req.body) {
           collection.insertOne(req.body, function(err, result) {
             if(!err) {
-              const buffer = new Buffer.from(JSON.stringify([{data: req.body}]));
+              const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'POST'}]));
               const record = [
                   {
                       topic: dbName,
@@ -154,7 +163,7 @@ app.delete('/', (req, res) => {
       if(req.body)  {
         collection.deleteOne(req.body, function(err, result) {
           if(!err) {
-            const buffer = new Buffer.from(JSON.stringify([{data: req.body}]));
+            const buffer = new Buffer.from(JSON.stringify([{data: req.body, type: 'DELETE'}]));
             const record = [
                 {
                     topic: dbName,
@@ -190,6 +199,11 @@ app.get('/status-mongo', (req, res) => {
             client.close();
         }
     });
+})
+
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', Prometheus.register.contentType)
+  res.end(Prometheus.register.metrics())
 })
 
 app.listen(port, () => {
