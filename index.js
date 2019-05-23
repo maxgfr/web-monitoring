@@ -73,12 +73,15 @@ kafkaClient.createTopics(mainTopic, (error, result) => {
   }
 });
 
+setInterval(() => {
+  PrometheusMetrics.requestPerSec.set(PrometheusMetrics.requestCounter.get().values[0].value/timerInstance.getTimeValues().seconds)
+}, 100);
+
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use((req, res, next) => {
   PrometheusMetrics.requestCounter.inc()
-  PrometheusMetrics.requestPerSec.set(PrometheusMetrics.requestCounter.get().values[0].value/timerInstance.getTimeValues().seconds)
   next();
 });
 
