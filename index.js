@@ -75,7 +75,7 @@ kafkaClient.createTopics(mainTopic, (error, result) => {
 
 setInterval(() => {
   PrometheusMetrics.requestPerSec.set(PrometheusMetrics.requestCounter.get().values[0].value/timerInstance.getTimeValues().seconds)
-}, 100);
+}, 1000);
 
 app.use(bodyParser.json());
 app.use(cors());
