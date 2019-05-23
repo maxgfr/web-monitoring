@@ -63,10 +63,10 @@ Or see customized metrics in the application (`http://localhost:1603/metrics`) :
 Finally, we can use `Grafana` for the monitoring of the application (`http://localhost:3000`) :
 
 <div align="center">
-  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-1.png" height="528,75" width="940"/>
+  <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-1.png" height="264.375" width="940"/>
   <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-node-2.png" height="528,75" width="940"/>
   <img src="https://github.com/maxgfr/web-monitoring/blob/master/screenshots/monitoring-mongo-1.png" height="528,75" width="940"/>
 </div>
 <br/>
 
-*To connect to `Grafana`, by default, the username is `admin` and the password is `pass`*
+*By default, for `Grafana` the username is `admin` and the password is `pass`*
