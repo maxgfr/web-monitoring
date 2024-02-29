@@ -1,0 +1,250 @@
+repo_name: maxgfr/web-monitoring
+report_id: b29222b0ca8125fdb10e224fd3ef5aa3
+version: 0.1
+repo_type: Public
+timestamp: '2024-02-29T18:33:30+00:00'
+requested_by: maxgfr
+provider: github
+branch: master
+detected_tools_count: 18
+tools:
+- name: JavaScript
+  description: Lightweight, interpreted, object-oriented language with first-class
+    functions
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/maxgfr/web-monitoring
+  detection_source: Repo Metadata
+- name: ExpressJS
+  description: Sinatra inspired web development framework for node.js -- insanely
+    fast, flexible, and simple
+  website_url: http://expressjs.com/
+  version: 4.17.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Microframeworks (Backend)
+  image_url: https://img.stackshare.io/service/1163/hashtag.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+- name: Node.js
+  description: A platform built on Chrome's JavaScript runtime for easily building
+    fast, scalable network applications
+  website_url: http://nodejs.org/
+  version: 8.0.0
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Frameworks (Full Stack)
+  image_url: https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/Dockerfile
+  detection_source: Dockerfile
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 12:13:00.000000000 Z
+- name: Kafka
+  description: Distributed, fault tolerant, high throughput pub-sub messaging system
+  website_url: http://kafka.apache.org/
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Message Queue
+  image_url: https://img.stackshare.io/service/1063/kazUJooF_400x400.jpg
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-22 08:45:20.000000000 Z
+- name: MongoDB
+  description: The database for giant ideas
+  website_url: http://www.mongodb.com/
+  open_source: true
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Databases
+  image_url: https://img.stackshare.io/service/1030/leaf-360x360.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/index.js
+  detection_source: index.js
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-23 11:02:04.000000000 Z
+- name: Docker
+  description: Enterprise Container Platform for High-Velocity Innovation.
+  website_url: https://www.docker.com/
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Virtual Machine Platforms & Containers
+  image_url: https://img.stackshare.io/service/586/n4u37v9t_400x400.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring
+  detection_source: Repo Metadata
+- name: Docker Compose
+  description: Define and run multi-container applications with Docker
+  website_url: https://github.com/docker/compose
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Container Tools
+  image_url: https://img.stackshare.io/service/3136/docker-compose.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/docker-compose.yml
+  detection_source: docker-compose.yml
+  last_updated_by: Paul
+  last_updated_on: 2019-05-22 18:50:56.000000000 Z
+- name: Dotenv
+  description: Loads environment variables from .env for Nodejs projects
+  website_url: https://github.com/motdotla/dotenv
+  license: BSD-2-Clause
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Server Configuration and Automation
+  image_url: https://img.stackshare.io/service/8067/default_90dcb1286af7685c68df319c764b80704df1155b.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring
+  detection_source: Repo Metadata
+- name: Prometheus
+  description: An open-source service monitoring system and time series database,
+    developed by SoundCloud
+  website_url: http://prometheus.io/
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Monitoring
+  sub_category: Monitoring Tools
+  image_url: https://img.stackshare.io/service/2501/default_3cf1b307194b26782be5cb209d30360580ae5b3c.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+- name: npm
+  description: The package manager for JavaScript.
+  website_url: https://www.npmjs.com/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Front End Package Manager
+  image_url: https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+- name: Mongo
+  description: Heroku provides services and tools to build, run, and scale web applications.
+    Follow @herokustatus for platform updates. A @salesforce company.
+  website_url: http://wedesignapps.herokuapp.com
+  open_source: false
+  hosted_saas: false
+  image_url: https://img.stackshare.io/service/3519/3wgIDj3j_normal.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/docker-compose.yml
+  detection_source: docker-compose.yml
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-23 09:40:37.000000000 Z
+- name: body-parser
+  description: Node.js body parsing middleware
+  package_url: https://www.npmjs.com/body-parser
+  version: 1.19.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15906/default_7c39a83d4acd952df89b1ebfdb94c8646324fbf1.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 10:42:03.000000000 Z
+- name: cors
+  description: Node.js CORS middleware
+  package_url: https://www.npmjs.com/cors
+  version: 2.8.5
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16165/default_41f04716a804e853d5c38a5b81ee0ea8a842ad82.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+- name: express
+  description: Fast, unopinionated, minimalist web framework
+  package_url: https://www.npmjs.com/express
+  version: 4.17.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15818/default_db4a7791d2f1174547374b9b587bc10fec088a5a.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-21 09:43:09.000000000 Z
+  vulnerabilities:
+  - name: qs vulnerable to Prototype Pollution
+    cve_id: CVE-2022-24999
+    cve_url: https://github.com/advisories/GHSA-hrpp-h998-j3pp
+    detected_date: Dec 7
+    severity: high
+    first_patched: 4.17.3
+- name: kafka-node
+  description: Client for Apache Kafka v0.9.x, v0.10.x and v0.11.x
+  package_url: https://www.npmjs.com/kafka-node
+  version: 4.1.3
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/18403/default_e8e7c4983a6d8c0ee777fe393fa262e894a5e119.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-22 08:45:20.000000000 Z
+- name: prom-client
+  description: Client for prometheus
+  package_url: https://www.npmjs.com/prom-client
+  version: 11.3.0
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/18412/default_863e53b96f84b4092f7c0ba36b8cee4bf60d33fe.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-22 10:11:04.000000000 Z
+- name: util
+  description: Node.js's util module for all engines
+  package_url: https://www.npmjs.com/util
+  version: 0.12.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16507/default_55f3303d620c93eecbee69c43373d484f2be492f.png
+  detection_source_url: https://github.com/maxgfr/web-monitoring/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: "@maxgfr"
+  last_updated_on: 2019-05-22 08:45:20.000000000 Z
